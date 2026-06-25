@@ -27,15 +27,24 @@ def responder(pregunta):
 html = """
 <!DOCTYPE html>
 <html>
+
 <head>
-    <title>Chatbot de Electrónica</title>
+
+<title>CircuitBot UAG</title>
+
 </head>
+
 <body>
 
-<h1>UNIVERSIDAD AUTONOMA DE GUADALAJARA</h1>
+<center>
 
-<h1>BIENVENIDOS AL CHATBOT DE LA MATERIA DE CIRCUITOS ELECTRICOS</h1>
+<img src="/static/uag.png" width="180">
 
+<h1>UNIVERSIDAD AUTÓNOMA DE GUADALAJARA</h1>
+
+<h2>BIENVENIDOS AL CHATBOT DE LA MATERIA DE CIRCUITOS ELÉCTRICOS</h2>
+
+</center>
 <form method="POST">
     <input type="text" name="pregunta" size="50" placeholder="Escribe tu pregunta">
     <input type="submit" value="Preguntar">
