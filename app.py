@@ -28,9 +28,7 @@ def responder(pregunta):
 html = """
 <!DOCTYPE html>
 <html>
-
 <head>
-
 <title>CircuitBot UAG</title>
 
 <style>
