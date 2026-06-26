@@ -33,6 +33,90 @@ html = """
 
 <style>
 
+
+
+
+
+
+.buho-container{
+    position:fixed;
+    right:25px;
+    bottom:25px;
+    display:flex;
+    align-items:flex-end;
+    gap:12px;
+    z-index:1000;
+}
+
+.buho{
+    width:110px;
+    animation: flotar 2.5s ease-in-out infinite;
+}
+
+.globo-bienvenida{
+    background:white;
+    color:#333;
+    padding:14px 18px;
+    border-radius:18px 18px 4px 18px;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.2);
+    max-width:260px;
+    font-size:15px;
+    text-align:left;
+    border-left:5px solid #7B1E3A;
+    animation: aparecer 1s ease;
+}
+
+.globo-bienvenida b{
+    color:#7B1E3A;
+}
+
+@keyframes flotar{
+    0%{
+        transform:translateY(0px);
+    }
+    50%{
+        transform:translateY(-10px);
+    }
+    100%{
+        transform:translateY(0px);
+    }
+}
+
+@keyframes aparecer{
+    from{
+        opacity:0;
+        transform:translateX(20px);
+    }
+    to{
+        opacity:1;
+        transform:translateX(0px);
+    }
+}
+
+@media screen and (max-width: 768px){
+    .buho-container{
+        right:10px;
+        bottom:10px;
+        flex-direction:column;
+        align-items:flex-end;
+    }
+
+    .buho{
+        width:80px;
+    }
+
+    .globo-bienvenida{
+        max-width:210px;
+        font-size:13px;
+    }
+}
+
+
+
+
+
+
+
 body{
     margin:0;
     font-family:Arial, Helvetica, sans-serif;
@@ -288,6 +372,9 @@ input[type=submit]:hover{
 
 </style>
 
+
+
+
 </head>
 
 <body>
@@ -332,13 +419,13 @@ input[type=submit]:hover{
 
     <div class="caja">
 
-        <h2>Bienvenido al Chatbot de Electrónica</h2>
+        <h2>Bienvenido al Chatbot de Electrónica y Circuitos Electricos</h2>
 
-        <p>Escribe una pregunta relacionada con electrónica o circuitos eléctricos.</p>
+        <p>Escribe una pregunta relacionada con electrónica o circuitos eléctricos o pega una imagen de un circuito.</p>
 
         <form method="POST" class="formulario">
 
-            <input type="text" name="pregunta" placeholder="Escribe tu pregunta aquí...">
+            <input type="text" name="pregunta" placeholder="Escribe o pega tu imagen aquí...">
 
             <input type="submit" value="Preguntar">
 
@@ -363,6 +450,29 @@ input[type=submit]:hover{
     {% endif %}
 
 </div>
+
+
+
+
+
+
+
+<div class="buho-container">
+
+    <div class="globo-bienvenida">
+        <b>Hola, soy BernaBOT.</b><br>
+        Puedo ayudarte con Ley de Ohm, Kirchhoff, resistencias, diodos, transistores y circuitos eléctricos.
+    </div>
+
+    <img src="/static/uag.png" class="buho" alt="BernaBOT">
+
+</div>
+
+
+
+
+
+
 
 </body>
 
