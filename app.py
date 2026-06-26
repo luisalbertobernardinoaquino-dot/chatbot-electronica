@@ -42,7 +42,7 @@ body{
 /* ENCABEZADO PROFESIONAL */
 
 .header-container{
-    padding:28px 28px 10px 28px;
+    padding:12px 20px 5px 20px;
 }
 
 .header-card{
@@ -58,20 +58,20 @@ body{
 .header-main{
     display:flex;
     align-items:center;
-    padding:36px 42px 22px 42px;
+    padding:18px 28px 10px 28px;
 }
 
 .logo-box{
-    width:32%;
-    min-width:270px;
+    width:25%;
+    min-width:180px;
     text-align:center;
-    border-right:3px solid #7B1E3A;
-    padding-right:28px;
+    border-right:2px solid #7B1E3A;
+    padding-right:20px;
 }
 
 .logo-uag{
-    width:85%;
-    max-width:360px;
+    width:80%;
+    max-width:240px;
     height:auto;
 }
 
@@ -83,46 +83,46 @@ body{
 
 .header-title{
     color:#7B1E3A;
-    font-size:38px;
+    font-size:22px;
     font-weight:900;
     letter-spacing:1px;
-    margin-bottom:14px;
+    margin-bottom:8px;
 }
 
 .campus-line{
     display:flex;
     align-items:center;
     justify-content:center;
-    gap:22px;
-    margin-bottom:18px;
+    gap:12px;
+    margin-bottom:10px;
 }
 
 .line-orange{
-    height:4px;
-    width:210px;
+    height:3px;
+    width:140px;
     background:#F28C28;
 }
 
 .campus{
-    color:#7B1E3A;
-    font-size:24px;
-    letter-spacing:10px;
+     color:#7B1E3A;
+    font-size:17px;
+    letter-spacing:5px;
     font-weight:500;
 }
 
 .bot-bar{
     background:linear-gradient(90deg,#7B001B,#9A1233,#7B001B);
     color:white;
-    font-size:22px;
+    font-size:15px;
     font-weight:bold;
     letter-spacing:1px;
-    border-radius:12px;
-    padding:15px 20px;
-    box-shadow:0px 4px 10px rgba(0,0,0,0.18);
+    border-radius:8px;
+    padding:10px 14px;
+    box-shadow:0px 3px 8px rgba(0,0,0,0.18);
 }
 
 .header-wave{
-    height:72px;
+    height:26px;
     background:#7B001B;
     position:relative;
 }
@@ -130,10 +130,10 @@ body{
 .header-wave:before{
     content:"";
     position:absolute;
-    top:-42px;
+    top:-12px;
     left:-5%;
     width:110%;
-    height:80px;
+    height:30px;
     background:#F28C28;
     border-radius:0 0 50% 50%;
 }
@@ -141,10 +141,10 @@ body{
 .header-wave:after{
     content:"";
     position:absolute;
-    top:-34px;
+    top:-8px;
     left:-5%;
     width:110%;
-    height:80px;
+    height:28px;
     background:white;
     border-radius:0 0 50% 50%;
 }
