@@ -2,7 +2,6 @@ from flask import Flask, request, render_template_string
 
 app = Flask(__name__)
 
-
 def responder(pregunta):
 
     pregunta = pregunta.lower()
@@ -37,56 +36,169 @@ html = """
 body{
     margin:0;
     font-family:Arial, Helvetica, sans-serif;
-    background:#f4f6f9;
+    background:linear-gradient(180deg,#f6f8fb 0%,#eef2f7 100%);
 }
 
-.header-banner{
-    width:100%;
+/* ENCABEZADO PROFESIONAL */
+
+.header-container{
+    padding:28px 28px 10px 28px;
+}
+
+.header-card{
     background:white;
-    padding:18px 0;
-    box-shadow:0px 3px 10px rgba(0,0,0,0.25);
-    text-align:center;
+    border-radius:18px;
+    box-shadow:0px 8px 24px rgba(0,0,0,0.18);
+    overflow:hidden;
+    max-width:1500px;
+    margin:auto;
+    position:relative;
 }
 
-.header-banner img{
-    width:95%;
-    max-width:1350px;
-    height:auto;
-    border-radius:14px;
+.header-main{
+    display:flex;
+    align-items:center;
+    padding:36px 42px 22px 42px;
 }
+
+.logo-box{
+    width:32%;
+    min-width:270px;
+    text-align:center;
+    border-right:3px solid #7B1E3A;
+    padding-right:28px;
+}
+
+.logo-uag{
+    width:85%;
+    max-width:360px;
+    height:auto;
+}
+
+.header-text{
+    width:68%;
+    text-align:center;
+    padding-left:34px;
+}
+
+.header-title{
+    color:#7B1E3A;
+    font-size:38px;
+    font-weight:900;
+    letter-spacing:1px;
+    margin-bottom:14px;
+}
+
+.campus-line{
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    gap:22px;
+    margin-bottom:18px;
+}
+
+.line-orange{
+    height:4px;
+    width:210px;
+    background:#F28C28;
+}
+
+.campus{
+    color:#7B1E3A;
+    font-size:24px;
+    letter-spacing:10px;
+    font-weight:500;
+}
+
+.bot-bar{
+    background:linear-gradient(90deg,#7B001B,#9A1233,#7B001B);
+    color:white;
+    font-size:22px;
+    font-weight:bold;
+    letter-spacing:1px;
+    border-radius:12px;
+    padding:15px 20px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.18);
+}
+
+.header-wave{
+    height:72px;
+    background:#7B001B;
+    position:relative;
+}
+
+.header-wave:before{
+    content:"";
+    position:absolute;
+    top:-42px;
+    left:-5%;
+    width:110%;
+    height:80px;
+    background:#F28C28;
+    border-radius:0 0 50% 50%;
+}
+
+.header-wave:after{
+    content:"";
+    position:absolute;
+    top:-34px;
+    left:-5%;
+    width:110%;
+    height:80px;
+    background:white;
+    border-radius:0 0 50% 50%;
+}
+
+/* CONTENIDO */
 
 .contenido{
-    margin:40px;
+    margin:35px;
     text-align:center;
 }
 
 .caja{
     background:white;
-    width:75%;
+    width:70%;
     margin:auto;
-    padding:30px;
-    border-radius:12px;
-    box-shadow:0px 2px 10px lightgray;
+    padding:35px;
+    border-radius:14px;
+    box-shadow:0px 5px 18px rgba(0,0,0,0.12);
+}
+
+.caja h2{
+    margin-top:0;
+    font-size:28px;
+}
+
+.caja p{
+    font-size:17px;
+}
+
+.formulario{
+    margin-top:28px;
 }
 
 input[type=text]{
-    width:500px;
-    height:40px;
+    width:55%;
+    height:46px;
     font-size:16px;
     border-radius:8px;
-    border:1px solid gray;
-    padding-left:10px;
+    border:1px solid #c9c9c9;
+    padding-left:14px;
+    box-shadow:0px 2px 8px rgba(0,0,0,0.08);
 }
 
 input[type=submit]{
-    height:44px;
+    height:49px;
     border:none;
     border-radius:8px;
     background:#7B1E3A;
     color:white;
-    padding:0px 20px;
+    padding:0px 28px;
     cursor:pointer;
     font-size:16px;
+    font-weight:bold;
+    margin-left:10px;
 }
 
 input[type=submit]:hover{
@@ -96,12 +208,12 @@ input[type=submit]:hover{
 .respuesta{
     margin-top:30px;
     background:#ffffff;
-    padding:20px;
-    border-radius:10px;
+    padding:24px;
+    border-radius:12px;
     width:70%;
     margin-left:auto;
     margin-right:auto;
-    box-shadow:0px 2px 8px lightgray;
+    box-shadow:0px 4px 12px rgba(0,0,0,0.12);
     text-align:left;
 }
 
@@ -110,28 +222,67 @@ input[type=submit]:hover{
     font-weight:bold;
 }
 
-@media screen and (max-width: 768px){
+/* RESPONSIVE */
 
-    .contenido{
-        margin:20px;
+@media screen and (max-width: 900px){
+
+    .header-main{
+        flex-direction:column;
+        padding:28px 22px 18px 22px;
+    }
+
+    .logo-box{
+        width:100%;
+        border-right:none;
+        border-bottom:2px solid #7B1E3A;
+        padding-right:0;
+        padding-bottom:18px;
+        margin-bottom:18px;
+    }
+
+    .logo-uag{
+        max-width:300px;
+    }
+
+    .header-text{
+        width:100%;
+        padding-left:0;
+    }
+
+    .header-title{
+        font-size:26px;
+    }
+
+    .campus{
+        font-size:18px;
+        letter-spacing:5px;
+    }
+
+    .line-orange{
+        width:80px;
+    }
+
+    .bot-bar{
+        font-size:16px;
     }
 
     .caja{
         width:90%;
-        padding:20px;
+        padding:25px;
     }
 
     input[type=text]{
         width:90%;
-        margin-bottom:10px;
+        margin-bottom:12px;
+    }
+
+    input[type=submit]{
+        margin-left:0;
+        width:92%;
     }
 
     .respuesta{
         width:90%;
-    }
-
-    .header-banner img{
-        width:98%;
     }
 }
 
@@ -141,43 +292,75 @@ input[type=submit]:hover{
 
 <body>
 
-<div class="header-banner">
-    <img src="/static/uaglogo.png" alt="Encabezado UAG BernaBOT">
+<div class="header-container">
+
+    <div class="header-card">
+
+        <div class="header-main">
+
+            <div class="logo-box">
+                <img src="/static/uaglogo.png" class="logo-uag" alt="Logo UAG">
+            </div>
+
+            <div class="header-text">
+
+                <div class="header-title">
+                    UNIVERSIDAD AUTÓNOMA DE GUADALAJARA
+                </div>
+
+                <div class="campus-line">
+                    <div class="line-orange"></div>
+                    <div class="campus">CAMPUS TABASCO</div>
+                    <div class="line-orange"></div>
+                </div>
+
+                <div class="bot-bar">
+                    BernaBOT / CHATBOT DE ELECTRÓNICA Y CIRCUITOS ELÉCTRICOS
+                </div>
+
+            </div>
+
+        </div>
+
+        <div class="header-wave"></div>
+
+    </div>
+
 </div>
 
 <div class="contenido">
 
-<div class="caja">
+    <div class="caja">
 
-<h2>Bienvenido al Chatbot de Electrónica</h2>
+        <h2>Bienvenido al Chatbot de Electrónica</h2>
 
-<p>Escribe una pregunta relacionada con electrónica o circuitos eléctricos.</p>
+        <p>Escribe una pregunta relacionada con electrónica o circuitos eléctricos.</p>
 
-<form method="POST">
+        <form method="POST" class="formulario">
 
-    <input type="text" name="pregunta" placeholder="Escribe tu pregunta aquí...">
+            <input type="text" name="pregunta" placeholder="Escribe tu pregunta aquí...">
 
-    <input type="submit" value="Preguntar">
+            <input type="submit" value="Preguntar">
 
-</form>
+        </form>
 
-</div>
+    </div>
 
-{% if pregunta %}
+    {% if pregunta %}
 
-<div class="respuesta">
+    <div class="respuesta">
 
-<h3>Pregunta</h3>
+        <h3>Pregunta</h3>
 
-<p class="pregunta">{{ pregunta }}</p>
+        <p class="pregunta">{{ pregunta }}</p>
 
-<h3>Respuesta</h3>
+        <h3>Respuesta</h3>
 
-<p>{{ respuesta }}</p>
+        <p>{{ respuesta }}</p>
 
-</div>
+    </div>
 
-{% endif %}
+    {% endif %}
 
 </div>
 
