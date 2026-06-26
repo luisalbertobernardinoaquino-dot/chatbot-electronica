@@ -133,7 +133,7 @@ input[type=submit]:hover{
 
 <div>
     <div class="titulo">UNIVERSIDAD AUTÓNOMA DE GUADALAJARA</div>
-    <div class="subtitulo">CircuitBot UAG | Chatbot de Circuitos Eléctricos</div>
+    <div class="subtitulo">BernaBOT UAG | Chatbot de Electronica y Circuitos Electricos</div>
 </div>
 
 </div>
