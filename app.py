@@ -29,7 +29,7 @@ html = """
 <!DOCTYPE html>
 <html>
 <head>
-<title>CircuitBot UAG</title>
+<title>BernaBOT UAG</title>
 
 <style>
 
@@ -39,31 +39,19 @@ body{
     background:#f4f6f9;
 }
 
-.header{
-    background:#7B1E3A;
-    color:white;
-    display:flex;
-    align-items:center;
-    padding:15px 30px;
-    box-shadow:0px 3px 8px gray;
-}
-
-.logo{
-    width:80px;
-    margin-right:20px;
-    border-radius:10px;
+.header-banner{
+    width:100%;
     background:white;
-    padding:5px;
+    padding:18px 0;
+    box-shadow:0px 3px 10px rgba(0,0,0,0.25);
+    text-align:center;
 }
 
-.titulo{
-    font-size:30px;
-    font-weight:bold;
-}
-
-.subtitulo{
-    font-size:18px;
-    margin-top:5px;
+.header-banner img{
+    width:95%;
+    max-width:1350px;
+    height:auto;
+    border-radius:14px;
 }
 
 .contenido{
@@ -121,21 +109,39 @@ input[type=submit]:hover{
     font-weight:bold;
 }
 
+@media screen and (max-width: 768px){
+
+    .contenido{
+        margin:20px;
+    }
+
+    .caja{
+        width:90%;
+        padding:20px;
+    }
+
+    input[type=text]{
+        width:90%;
+        margin-bottom:10px;
+    }
+
+    .respuesta{
+        width:90%;
+    }
+
+    .header-banner img{
+        width:98%;
+    }
+}
+
 </style>
 
 </head>
 
 <body>
 
-<div class="header">
-
-<img src="/static/uag.png" class="logo">
-
-<div>
-    <div class="titulo">UNIVERSIDAD AUTÓNOMA DE GUADALAJARA</div>
-    <div class="subtitulo">BernaBOT UAG | Chatbot de Electronica y Circuitos Electricos</div>
-</div>
-
+<div class="header-banner">
+    <img src="/static/uaglogo.png" alt="Encabezado UAG BernaBOT">
 </div>
 
 <div class="contenido">
