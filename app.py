@@ -1,29 +1,89 @@
 from flask import Flask, request, render_template_string
+from openai import OpenAI
+import os
 
 app = Flask(__name__)
 
+
 def responder(pregunta):
 
-    pregunta = pregunta.lower()
+    if not pregunta.strip():
+        return "Por favor escribe una pregunta."
 
-    if "ley de ohm" in pregunta:
-        return "La Ley de Ohm establece que V = I × R"
+    api_key = os.getenv("OPENAI_API_KEY")
 
-    elif "kirchhoff" in pregunta:
-        return "Las leyes de Kirchhoff permiten analizar corrientes y voltajes en circuitos."
+    if not api_key:
+        return "BernaBOT todavía no tiene configurada la clave de acceso a la inteligencia artificial."
 
-    elif "resistencia" in pregunta:
-        return "La resistencia se mide en Ohms (Ω)."
+    try:
 
-    elif "diodo" in pregunta:
-        return "Un diodo permite el paso de corriente en una sola dirección."
+        client = OpenAI(api_key=api_key)
 
-    elif "transistor" in pregunta:
-        return "Un transistor puede funcionar como amplificador o interruptor."
+        respuesta = client.responses.create(
 
-    else:
-        return "Lo siento, aún no conozco esa respuesta."
+            model="gpt-5.6-luna",
 
+            instructions="""
+            Eres BernaBOT, un asistente educativo especializado en
+            electrónica, circuitos eléctricos, electrónica analógica,
+            electrónica digital y microcontroladores.
+
+            Estás diseñado principalmente para apoyar a estudiantes
+            universitarios de ingeniería.
+
+            Responde siempre en español.
+
+            Explica los conceptos de manera didáctica y clara.
+
+            Cuando exista un problema numérico:
+            1. Identifica los datos.
+            2. Escribe la fórmula.
+            3. Sustituye los valores.
+            4. Realiza el cálculo.
+            5. Indica las unidades.
+            6. Explica brevemente el resultado.
+
+            Puedes explicar temas como:
+            - Ley de Ohm
+            - Leyes de Kirchhoff
+            - Resistencias
+            - Capacitores
+            - Inductores
+            - Diodos
+            - Transistores
+            - Amplificadores operacionales
+            - Circuitos eléctricos
+            - Electrónica analógica
+            - Electrónica digital
+            - Compuertas lógicas
+            - Flip-flops
+            - Contadores
+            - Registros
+            - GAL y dispositivos lógicos programables
+            - Microcontroladores
+            - PIC
+            - Fuentes de alimentación
+            - Rectificadores
+            - PWM
+            - Osciladores
+            - Instrumentación electrónica
+
+            Si el estudiante solicita un cálculo, muestra el
+            procedimiento y no solamente la respuesta final.
+
+            Tu nombre es BernaBOT.
+            """,
+
+            input=pregunta
+        )
+
+        return respuesta.output_text
+
+    except Exception as error:
+
+        print("ERROR EN BERNABOT:", error)
+
+        return "Ocurrió un problema al consultar la inteligencia artificial. Intenta nuevamente."
 
 html = """
 <!DOCTYPE html>
