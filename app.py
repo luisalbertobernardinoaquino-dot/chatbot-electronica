@@ -2,9 +2,50 @@ from flask import Flask, request, render_template_string
 from google import genai
 from google.genai import types
 import os
+import re
 
 app = Flask(__name__)
 
+def limpiar_respuesta(texto):
+
+    if not texto:
+        return ""
+
+    # Quitar Markdown
+    texto = texto.replace("**", "")
+    texto = texto.replace("__", "")
+    texto = texto.replace("###", "")
+    texto = texto.replace("##", "")
+    texto = texto.replace("#", "")
+    texto = texto.replace("```", "")
+    texto = texto.replace("$$", "")
+    texto = texto.replace("$", "")
+
+    # Convertir expresiones LaTeX comunes
+    texto = texto.replace("\\Omega", "Ω")
+    texto = texto.replace("\\times", "×")
+    texto = texto.replace("\\cdot", "×")
+    texto = texto.replace("\\text", "")
+    texto = texto.replace("\\mathrm", "")
+
+    # Convertir fracciones sencillas
+    texto = re.sub(
+        r'\\frac\{([^{}]+)\}\{([^{}]+)\}',
+        r'(\1) / (\2)',
+        texto
+    )
+
+    # Quitar llaves de LaTeX
+    texto = texto.replace("{", "")
+    texto = texto.replace("}", "")
+
+    # Limpiar barras LaTeX restantes
+    texto = texto.replace("\\", "")
+
+    # Evitar demasiados saltos de línea
+    texto = re.sub(r'\n{3,}', '\n\n', texto)
+
+    return texto.strip()
 
 def responder(pregunta):
 
@@ -94,6 +135,67 @@ def responder(pregunta):
                 Cuando sea conveniente, utiliza ecuaciones.
 
                 Tu nombre es BernaBOT.
+
+                IMPORTANTE PARA EL FORMATO DE RESPUESTA:
+
+No utilices Markdown.
+No utilices símbolos como **, ### o ``` .
+No utilices LaTeX ni expresiones como \text{}, \frac{}, $$ o \( \).
+
+Escribe las ecuaciones en texto sencillo y fácil de leer.
+
+Ejemplo:
+
+V = I × R
+
+R = V / I
+
+R = 10 V / 0.02 A
+
+R = 500 Ω
+
+Separa cada sección utilizando saltos de línea.
+Utiliza títulos sencillos como:
+
+DATOS:
+FÓRMULA:
+SUSTITUCIÓN:
+RESULTADO:
+CONCLUSIÓN:
+
+REGLA DE FORMATO OBLIGATORIA:
+
+Devuelve únicamente texto plano.
+
+NO utilices Markdown.
+NO utilices LaTeX.
+NO utilices ** para negritas.
+NO utilices # ni ### para títulos.
+NO utilices símbolos $.
+NO utilices comandos como \frac, \text, \Omega o similares.
+
+Para escribir fórmulas utiliza texto normal.
+
+Ejemplo correcto:
+
+DATOS:
+
+Voltaje de fuente = 12 V
+Voltaje del LED = 2 V
+Corriente = 20 mA = 0.02 A
+
+FÓRMULA:
+
+R = (Vfuente - Vled) / I
+
+SUSTITUCIÓN:
+
+R = (12 V - 2 V) / 0.02 A
+
+RESULTADO:
+
+R = 500 Ω
+
                 """,
 
                 temperature=0.3,
@@ -102,7 +204,7 @@ def responder(pregunta):
             )
         )
 
-        return respuesta.text
+        return limpiar_respuesta(respuesta.text)
 
     except Exception as error:
 
@@ -386,6 +488,8 @@ input[type=submit]:hover{
     margin-right:auto;
     box-shadow:0px 4px 12px rgba(0,0,0,0.12);
     text-align:left;
+    line-height:1.6;
+    white-space:pre-wrap;
 }
 
 .pregunta{
@@ -558,7 +662,17 @@ input[type=submit]:hover{
 
 
 
+<script>
 
+window.addEventListener("load", function(){
+
+    if (window.history.replaceState) {
+        window.history.replaceState(null, "", "/");
+    }
+
+});
+
+</script>
 
 
 </body>
