@@ -1,11 +1,11 @@
-from flask import Flask, request, render_template_string
+from flask import Flask, request, render_template_string, session, redirect, url_for
 from google import genai
 from google.genai import types
 import os
 import re
-
+from hmac import compare_digest
 app = Flask(__name__)
-
+app.secret_key = os.environ.get("SECRET_KEY")
 def limpiar_respuesta(texto):
 
     if not texto:
@@ -823,8 +823,208 @@ formulario.addEventListener("submit", async function(evento) {
 
 </html>
 """
+@app.route("/admin")
+def admin_panel():
+
+    if not session.get("admin"):
+        return redirect(url_for("admin_login"))
+
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Administrador - BernaBOT</title>
+
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                background: #f4f7fb;
+                margin: 0;
+            }
+
+            .encabezado {
+                background: #0066cc;
+                color: white;
+                padding: 20px;
+                text-align: center;
+            }
+
+            .contenedor {
+                max-width: 900px;
+                margin: 40px auto;
+                padding: 20px;
+            }
+
+            .tarjeta {
+                background: white;
+                padding: 25px;
+                margin-bottom: 20px;
+                border-radius: 12px;
+                box-shadow: 0 3px 12px rgba(0,0,0,0.12);
+            }
+
+            .boton {
+                display: inline-block;
+                background: #0066cc;
+                color: white;
+                text-decoration: none;
+                padding: 12px 20px;
+                margin: 5px;
+                border-radius: 6px;
+            }
+
+            .salir {
+                background: #cc3333;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="encabezado">
+            <h1>BernaBOT</h1>
+            <h2>Panel de administrador</h2>
+        </div>
+
+        <div class="contenedor">
+
+            <div class="tarjeta">
+
+                <h2>Administración de BernaBOT</h2>
+
+                <p>
+                    Desde este panel podrás administrar y configurar
+                    las funciones de BernaBOT.
+                </p>
+
+                <a class="boton" href="/">
+                    Ver BernaBOT
+                </a>
+
+                <a class="boton salir" href="/admin/logout">
+                    Cerrar sesión
+                </a>
+
+            </div>
+
+        </div>
+
+    </body>
+
+    </html>
+    """)
 
 
+@app.route("/admin/logout")
+def admin_logout():
+
+    session.pop("admin", None)
+
+    return redirect(url_for("admin_login"))
+@app.route("/admin/login", methods=["GET", "POST"])
+def admin_login():
+    error = ""
+
+    if request.method == "POST":
+        password = request.form.get("password", "")
+        admin_password = os.environ.get("ADMIN_PASSWORD", "")
+
+        if admin_password and compare_digest(password, admin_password):
+            session["admin"] = True
+            return redirect(url_for("admin_panel"))
+
+        error = "Contraseña incorrecta."
+
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html lang="es">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Administrador - BernaBOT</title>
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background: #f4f7fb;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                height: 100vh;
+                margin: 0;
+            }
+
+            .login {
+                background: white;
+                padding: 35px;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0,0,0,0.15);
+                width: 320px;
+                text-align: center;
+            }
+
+            input {
+                width: 90%;
+                padding: 12px;
+                margin: 15px 0;
+                border: 1px solid #ccc;
+                border-radius: 6px;
+            }
+
+            button {
+                background: #0066cc;
+                color: white;
+                border: none;
+                padding: 12px 25px;
+                border-radius: 6px;
+                cursor: pointer;
+            }
+
+            .error {
+                color: red;
+            }
+        </style>
+    </head>
+
+    <body>
+
+        <div class="login">
+            <h2>BernaBOT</h2>
+            <h3>Panel de administrador</h3>
+
+            <form method="POST">
+
+                <input
+                    type="password"
+                    name="password"
+                    placeholder="Contraseña"
+                    required
+                >
+
+                <br>
+
+                <button type="submit">
+                    Ingresar
+                </button>
+
+            </form>
+
+            {% if error %}
+                <p class="error">{{ error }}</p>
+            {% endif %}
+
+        </div>
+
+    </body>
+    </html>
+    """, error=error)
 @app.route("/", methods=["GET","POST"])
 def inicio():
 
