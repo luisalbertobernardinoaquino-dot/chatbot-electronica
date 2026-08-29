@@ -479,18 +479,44 @@ input[type=submit]:hover{
 }
 
 .respuesta{
-    margin-top:20px;
+    margin:20px auto;
     background:#ffffff;
-    padding:24px 30px;
+    padding:25px 30px;
     border-radius:12px;
     width:70%;
-    margin-left:auto;
-    margin-right:auto;
     box-shadow:0px 4px 12px rgba(0,0,0,0.12);
     text-align:left;
-    line-height:1.6;
+    line-height:1.5;
+    white-space:normal !important;
 }
 
+/* TITULOS PREGUNTA Y RESPUESTA */
+.respuesta h3{
+    margin:0 0 8px 0 !important;
+    padding:0 !important;
+    font-size:22px;
+    line-height:1.3;
+}
+
+/* TEXTO DE LA PREGUNTA */
+.respuesta .pregunta{
+    color:#7B1E3A;
+    font-weight:bold;
+    margin:0 0 22px 25px !important;
+    padding:0 !important;
+    line-height:1.5;
+    white-space:normal !important;
+}
+
+/* TEXTO GENERADO POR BERNABOT */
+.texto-respuesta{
+    white-space:pre-wrap;
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:17px;
+    line-height:1.6;
+    margin:0 0 0 25px !important;
+    padding:0 !important;
+}
 .texto-respuesta{
     white-space:pre-wrap;
     font-family:Georgia, "Times New Roman", serif;
@@ -499,10 +525,6 @@ input[type=submit]:hover{
     margin-top:10px;
 }
 
-.pregunta{
-    color:#7B1E3A;
-    font-weight:bold;
-}
 
 /* RESPONSIVE */
 
