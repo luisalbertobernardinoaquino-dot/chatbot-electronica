@@ -614,13 +614,26 @@ input[type=submit]:hover{
 
         <p>Escribe una pregunta relacionada con electrónica o circuitos eléctricos o pega una imagen de un circuito.</p>
 
-        <form method="POST" class="formulario">
+ <form method="POST" class="formulario" id="formulario-bernabot">
 
-            <input type="text" name="pregunta" placeholder="Escribe o pega tu imagen aquí...">
+    <input
+        type="text"
+        name="pregunta"
+        id="pregunta"
+        placeholder="Escribe tu pregunta aquí..."
+        required
+    >
 
-            <input type="submit" value="Preguntar">
+    <input
+        type="submit"
+        id="boton-preguntar"
+        value="Preguntar"
+    >
 
-        </form>
+</form>
+
+<div id="estado-bernabot"></div>
+
 
     </div>
 
@@ -682,6 +695,53 @@ window.addEventListener("load", function(){
     if (navegacion && navegacion.type === "reload") {
         window.location.replace("/");
     }
+</script>
+
+<script>
+
+const formulario = document.getElementById("formulario-bernabot");
+const estado = document.getElementById("estado-bernabot");
+const boton = document.getElementById("boton-preguntar");
+
+formulario.addEventListener("submit", async function(evento) {
+
+    evento.preventDefault();
+
+    estado.innerHTML = "BernaBOT está procesando tu pregunta. Por favor espera...";
+    boton.disabled = true;
+    boton.value = "Procesando...";
+
+    const datos = new FormData(formulario);
+
+    try {
+
+        const respuesta = await fetch("/", {
+            method: "POST",
+            body: datos
+        });
+
+        if (!respuesta.ok) {
+            throw new Error("Error del servidor");
+        }
+
+        const html = await respuesta.text();
+
+        document.open();
+        document.write(html);
+        document.close();
+
+    } catch (error) {
+
+        estado.innerHTML =
+            "BernaBOT está tardando más de lo normal en responder. " +
+            "Por favor intenta realizar nuevamente tu pregunta.";
+
+        boton.disabled = false;
+        boton.value = "Preguntar";
+    }
+
+});
+
 </script>
 
 </body>
