@@ -650,10 +650,12 @@ input[type=submit]:hover{
 
 <div class="buho-container">
 
-    <div class="globo-bienvenida">
-        <b>Hola, soy BernaBOT.</b><br>
-        Puedo ayudarte con Ley de Ohm, Kirchhoff, resistencias, diodos, transistores y circuitos eléctricos.
-    </div>
+{% if not respuesta %}
+<div class="globo-bienvenida">
+    <b>Hola, soy BernaBOT.</b><br>
+    Puedo ayudarte con Ley de Ohm, Kirchhoff, resistencias, diodos, transistores y circuitos eléctricos.
+</div>
+{% endif %}
 
     <img src="/static/uag.png" class="buho" alt="BernaBOT">
 
@@ -674,6 +676,13 @@ window.addEventListener("load", function(){
 
 </script>
 
+<script>
+    const navegacion = performance.getEntriesByType("navigation")[0];
+
+    if (navegacion && navegacion.type === "reload") {
+        window.location.replace("/");
+    }
+</script>
 
 </body>
 
