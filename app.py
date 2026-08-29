@@ -637,19 +637,21 @@ input[type=submit]:hover{
 
     </div>
 
- {% if pregunta %}
+{% if pregunta %}
 
-<div class="respuesta" style="margin-top:20px; padding:25px 30px; min-height:0; height:auto;">
+<div class="respuesta">
 
-    <h3 style="margin:0 0 10px 0;">Pregunta</h3>
+    <h3>Pregunta</h3>
 
-    <p class="pregunta" style="margin:0 0 25px 0;">
+    <p class="pregunta">
         {{ pregunta }}
     </p>
 
-    <h3 style="margin:0 0 15px 0;">Respuesta</h3>
+    <h3>Respuesta</h3>
 
-    <div id="respuesta-original" style="display:none;">{{ respuesta }}</div>
+    <div id="respuesta-original">
+        {{ respuesta }}
+    </div>
 
     <div id="respuesta-formateada"></div>
 
@@ -756,86 +758,94 @@ const respuestaFormateada = document.getElementById("respuesta-formateada");
 if (respuestaOriginal && respuestaFormateada) {
 
     const texto = respuestaOriginal.textContent.trim();
-    const lineas = texto.split(/\r?\n/);
 
-    lineas.forEach(function(linea) {
+    if (texto.length > 0) {
 
-        linea = linea.trim();
+        const lineas = texto.split(/\r?\n/);
 
-        if (linea === "") {
-            return;
+        lineas.forEach(function(linea) {
+
+            linea = linea.trim();
+
+            if (linea === "") {
+                return;
+            }
+
+            const titulo = linea.toUpperCase();
+
+            if (
+                titulo === "DATOS:" ||
+                titulo === "FÓRMULA:" ||
+                titulo === "FORMULA:" ||
+                titulo === "SUSTITUCIÓN:" ||
+                titulo === "SUSTITUCION:" ||
+                titulo === "RESULTADO:" ||
+                titulo === "CONCLUSIÓN:" ||
+                titulo === "CONCLUSION:"
+            ) {
+
+                const elemento = document.createElement("div");
+
+                elemento.style.fontWeight = "bold";
+                elemento.style.fontFamily = "Arial, sans-serif";
+                elemento.style.fontSize = "19px";
+                elemento.style.marginTop = "18px";
+                elemento.style.marginBottom = "6px";
+                elemento.style.color = "#8b1538";
+
+                elemento.textContent = linea;
+
+                respuestaFormateada.appendChild(elemento);
+
+            }
+
+            else if (linea.includes("=")) {
+
+                const formula = document.createElement("div");
+
+                formula.style.textAlign = "center";
+                formula.style.fontWeight = "bold";
+                formula.style.fontFamily = "Georgia, serif";
+                formula.style.fontSize = "21px";
+                formula.style.margin = "12px auto";
+                formula.style.padding = "10px 20px";
+                formula.style.background = "#f3f3f3";
+                formula.style.borderRadius = "8px";
+                formula.style.maxWidth = "650px";
+
+                formula.textContent = linea;
+
+                respuestaFormateada.appendChild(formula);
+
+            }
+
+            else {
+
+                const parrafo = document.createElement("p");
+
+                parrafo.style.fontFamily = "Georgia, serif";
+                parrafo.style.fontSize = "17px";
+                parrafo.style.lineHeight = "1.55";
+                parrafo.style.textIndent = "30px";
+                parrafo.style.margin = "5px 0";
+
+                parrafo.textContent = linea;
+
+                respuestaFormateada.appendChild(parrafo);
+
+            }
+
+        });
+
+        if (respuestaFormateada.children.length > 0) {
+            respuestaOriginal.style.display = "none";
         }
 
-        const titulo = linea.toUpperCase();
-
-        if (
-            titulo === "DATOS:" ||
-            titulo === "FÓRMULA:" ||
-            titulo === "FORMULA:" ||
-            titulo === "SUSTITUCIÓN:" ||
-            titulo === "SUSTITUCION:" ||
-            titulo === "RESULTADO:" ||
-            titulo === "CONCLUSIÓN:" ||
-            titulo === "CONCLUSION:"
-        ) {
-
-            const elemento = document.createElement("div");
-
-            elemento.style.fontWeight = "bold";
-            elemento.style.fontFamily = "Arial, sans-serif";
-            elemento.style.fontSize = "19px";
-            elemento.style.marginTop = "20px";
-            elemento.style.marginBottom = "8px";
-            elemento.style.color = "#8b1538";
-
-            elemento.textContent = linea;
-
-            respuestaFormateada.appendChild(elemento);
-
-        }
-
-        else if (linea.includes("=")) {
-
-            const formula = document.createElement("div");
-
-            formula.style.textAlign = "center";
-            formula.style.fontWeight = "bold";
-            formula.style.fontFamily = "Georgia, serif";
-            formula.style.fontSize = "21px";
-            formula.style.margin = "14px auto";
-            formula.style.padding = "10px 20px";
-            formula.style.background = "#f4f4f4";
-            formula.style.borderRadius = "8px";
-            formula.style.maxWidth = "650px";
-
-            formula.textContent = linea;
-
-            respuestaFormateada.appendChild(formula);
-
-        }
-
-        else {
-
-            const parrafo = document.createElement("p");
-
-            parrafo.style.fontFamily = "Georgia, serif";
-            parrafo.style.fontSize = "17px";
-            parrafo.style.lineHeight = "1.6";
-            parrafo.style.textIndent = "30px";
-            parrafo.style.margin = "5px 0";
-
-            parrafo.textContent = linea;
-
-            respuestaFormateada.appendChild(parrafo);
-
-        }
-
-    });
+    }
 
 }
 
 </script>
-
 </body>
 
 </html>
