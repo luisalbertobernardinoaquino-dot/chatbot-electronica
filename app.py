@@ -590,6 +590,47 @@ input[type=submit]:hover{
     }
 }
 
+/* TITULOS DE LA SOLUCION */
+.titulo-seccion{
+    font-weight:bold;
+    font-family:Arial, sans-serif;
+    font-size:20px;
+    color:#7B1E3A;
+    margin:18px 0 8px 0;
+}
+
+/* TEXTO EXPLICATIVO */
+.parrafo-respuesta{
+    font-family:Georgia, "Times New Roman", serif;
+    font-size:17px;
+    line-height:1.7;
+    text-indent:28px;
+    margin:6px 0;
+    color:#222;
+}
+
+/* RECUADRO PARA FORMULAS */
+.formula-box{
+    max-width:520px;
+    margin:16px auto;
+    padding:14px 20px;
+    background:#f8f8f8;
+    border:1px solid #d8d8d8;
+    border-left:6px solid #7B1E3A;
+    border-radius:12px;
+    box-shadow:0px 4px 10px rgba(0,0,0,0.10);
+    text-align:center;
+    font-family:"Cambria Math", Georgia, serif;
+    font-size:26px;
+    font-weight:bold;
+    color:#111;
+}
+
+/* PEQUEÑA SEPARACION ENTRE BLOQUES */
+.espacio-respuesta{
+    height:8px;
+}
+
 </style>
 
 
@@ -678,9 +719,9 @@ input[type=submit]:hover{
 
     <h3>Respuesta</h3>
 
-    <div class="texto-respuesta">
-        {{ respuesta }}
-    </div>
+<div class="texto-respuesta" id="texto-respuesta">
+    {{ respuesta }}
+</div>
 
 </div>
 
