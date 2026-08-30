@@ -863,14 +863,17 @@ def admin_panel():
         reversed(historial_preguntas[-10:])
     )
 
+    seccion = request.args.get("seccion", "")
+
     return render_template_string("""
     <!DOCTYPE html>
     <html lang="es">
 
     <head>
+
         <meta charset="UTF-8">
 
-        <title>Panel de Administración - BernaBOT</title>
+        <title>Panel BernaBOT</title>
 
         <style>
 
@@ -883,8 +886,8 @@ def admin_panel():
             .encabezado {
                 background: #7B1E3A;
                 color: white;
-                padding: 25px;
                 text-align: center;
+                padding: 25px;
             }
 
             .contenedor {
@@ -896,62 +899,88 @@ def admin_panel():
             .hoy {
                 background: white;
                 padding: 25px;
-                border-radius: 12px;
                 text-align: center;
+                border-radius: 12px;
                 margin-bottom: 25px;
-            }
-
-            .hoy h2 {
-                color: #7B1E3A;
             }
 
             .numero {
                 font-size: 45px;
                 font-weight: bold;
+                color: #7B1E3A;
             }
 
-            details {
+            .menu {
+                display: block;
                 background: white;
-                margin-bottom: 15px;
+                padding: 20px;
+                margin-bottom: 12px;
+
                 border-radius: 10px;
                 border-left: 7px solid #7B1E3A;
-                box-shadow: 0 2px 7px rgba(0,0,0,0.10);
-            }
 
-            summary {
-                padding: 20px;
+                text-decoration: none;
+
+                color: #333;
+
                 font-size: 18px;
                 font-weight: bold;
-                cursor: pointer;
             }
 
-            .contenido {
-                padding: 5px 25px 20px 25px;
+            .menu:hover {
+                background: #f8edf1;
             }
 
-            .pregunta-item {
+            .resultado {
+
+                background: white;
+
+                padding: 25px;
+
+                margin-top: 25px;
+
+                border-radius: 10px;
+
+                border-top: 5px solid #7B1E3A;
+            }
+
+            .pregunta {
+
                 padding: 12px 0;
+
                 border-bottom: 1px solid #ddd;
             }
 
             .fecha {
+
                 color: #777;
+
                 font-size: 14px;
+
                 margin-top: 5px;
             }
 
             .botones {
+
                 text-align: center;
+
                 margin-top: 30px;
             }
 
             .boton {
+
                 display: inline-block;
+
                 background: #7B1E3A;
+
                 color: white;
+
                 padding: 12px 22px;
+
                 margin: 5px;
+
                 text-decoration: none;
+
                 border-radius: 7px;
             }
 
@@ -965,116 +994,178 @@ def admin_panel():
 
     <body>
 
+
         <div class="encabezado">
+
             <h1>BernaBOT</h1>
+
             <p>Panel de Administración</p>
+
         </div>
 
+
         <div class="contenedor">
+
 
             <div class="hoy">
 
                 <h2>Preguntas realizadas hoy</h2>
 
                 <div class="numero">
+
                     {{ preguntas_hoy }}
+
                 </div>
 
             </div>
 
 
-            <details>
+            <a class="menu"
+               href="/admin?seccion=total">
 
-                <summary>
-                    1. Preguntas realizadas en total
-                </summary>
+                1. Preguntas realizadas en total
 
-                <div class="contenido">
+            </a>
 
-                    <h2>
-                        Total de preguntas: {{ total_preguntas }}
-                    </h2>
+
+            <a class="menu"
+               href="/admin?seccion=temas">
+
+                2. Temas más consultados
+
+            </a>
+
+
+            <a class="menu"
+               href="/admin?seccion=historial">
+
+                3. Historial de preguntas recientes
+
+            </a>
+
+
+            <a class="menu"
+               href="/admin?seccion=fechas">
+
+                4. Fecha y hora de cada pregunta
+
+            </a>
+
+
+
+            {% if seccion == "total" %}
+
+                <div class="resultado">
+
+                    <h2>Preguntas realizadas en total</h2>
+
+                    <div class="numero">
+
+                        {{ total_preguntas }}
+
+                    </div>
 
                 </div>
 
-            </details>
+            {% endif %}
 
 
-            <details>
 
-                <summary>
-                    2. Temas más consultados
-                </summary>
+            {% if seccion == "temas" %}
 
-                <div class="contenido">
+                <div class="resultado">
+
+                    <h2>Temas más consultados</h2>
 
                     <p>
-                        Análisis de temas disponible próximamente.
+                        Estadística de temas disponible próximamente.
                     </p>
 
                 </div>
 
-            </details>
+            {% endif %}
 
 
-            <details>
 
-                <summary>
-                    3. Historial de preguntas recientes
-                </summary>
+            {% if seccion == "historial" %}
 
-                <div class="contenido">
+                <div class="resultado">
+
+                    <h2>
+                        Historial de preguntas recientes
+                    </h2>
+
 
                     {% if preguntas_recientes %}
 
+
                         {% for item in preguntas_recientes %}
 
-                            <div class="pregunta-item">
+                            <div class="pregunta">
 
                                 <strong>
+
                                     {{ item.pregunta }}
+
                                 </strong>
 
                                 <div class="fecha">
-                                    {{ item.fecha }} - {{ item.hora }}
+
+                                    {{ item.fecha }}
+                                    -
+                                    {{ item.hora }}
+
                                 </div>
 
                             </div>
 
                         {% endfor %}
 
+
                     {% else %}
 
+
                         <p>
+
                             Todavía no se han realizado preguntas.
+
                         </p>
+
 
                     {% endif %}
 
+
                 </div>
 
-            </details>
+            {% endif %}
 
 
-            <details>
 
-                <summary>
-                    4. Fecha y hora de cada pregunta
-                </summary>
+            {% if seccion == "fechas" %}
 
-                <div class="contenido">
+                <div class="resultado">
+
+                    <h2>
+                        Fecha y hora de cada pregunta
+                    </h2>
+
 
                     {% if preguntas_recientes %}
 
+
                         {% for item in preguntas_recientes %}
 
-                            <div class="pregunta-item">
+                            <div class="pregunta">
 
                                 <strong>
-                                    {{ item.fecha }} - {{ item.hora }}
+
+                                    {{ item.fecha }}
+                                    -
+                                    {{ item.hora }}
+
                                 </strong>
 
-                                <br>
+                                <br><br>
 
                                 {{ item.pregunta }}
 
@@ -1082,31 +1173,42 @@ def admin_panel():
 
                         {% endfor %}
 
+
                     {% else %}
 
                         <p>
+
                             No existen registros todavía.
+
                         </p>
 
                     {% endif %}
 
                 </div>
 
-            </details>
+            {% endif %}
+
 
 
             <div class="botones">
 
-                <a href="/" class="boton">
+                <a href="/"
+                   class="boton">
+
                     Ver BernaBOT
+
                 </a>
+
 
                 <a href="/admin/logout"
                    class="boton salir">
+
                     Cerrar sesión
+
                 </a>
 
             </div>
+
 
         </div>
 
@@ -1116,13 +1218,9 @@ def admin_panel():
     """,
     preguntas_hoy=preguntas_hoy,
     total_preguntas=total_preguntas,
-    preguntas_recientes=preguntas_recientes
+    preguntas_recientes=preguntas_recientes,
+    seccion=seccion
     )
-
-
-
-
-
 
 
 
