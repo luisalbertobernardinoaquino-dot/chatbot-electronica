@@ -1328,6 +1328,27 @@ def admin_login():
     </body>
     </html>
     """, error=error)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/", methods=["GET","POST"])
 def inicio():
 
@@ -1337,18 +1358,18 @@ def inicio():
     if request.method == "POST":
         pregunta = request.form["pregunta"]
 
- if pregunta.strip():
-        ahora = datetime.now(ZoneInfo("America/Merida"))
+        if pregunta.strip():
+            ahora = datetime.now(ZoneInfo("America/Merida"))
 
-        historial_preguntas.append({
-            "pregunta": pregunta.strip(),
-            "fecha": ahora.strftime("%d/%m/%Y"),
-            "hora": ahora.strftime("%H:%M")
-        })
+            historial_preguntas.append({
+                "pregunta": pregunta.strip(),
+                "fecha": ahora.strftime("%d/%m/%Y"),
+                "hora": ahora.strftime("%H:%M")
+            })
 
-        if len(historial_preguntas) > 50:
-            historial_preguntas.pop(0)
-        
+            if len(historial_preguntas) > 50:
+                historial_preguntas.pop(0)
+
         respuesta = responder(pregunta)
 
     return render_template_string(
@@ -1356,6 +1377,11 @@ def inicio():
         pregunta=pregunta,
         respuesta=respuesta
     )
+
+
+
+
+
 
 
 if __name__ == "__main__":
