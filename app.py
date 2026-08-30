@@ -827,6 +827,159 @@ formulario.addEventListener("submit", async function(evento) {
 def admin_panel():
 
     if not session.get("admin"):
+        return redirect("/admin/login")
+
+    return render_template_string("""
+    <!DOCTYPE html>
+    <html lang="es">
+
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+        <title>Panel de Administración - BernaBOT</title>
+
+        <style>
+
+            body {
+                font-family: Arial, sans-serif;
+                background: #f4f6f8;
+                margin: 0;
+            }
+
+            .encabezado {
+                background: #7B1E3A;
+                color: white;
+                padding: 25px;
+                text-align: center;
+            }
+
+            .encabezado h1 {
+                margin: 0;
+            }
+
+            .encabezado p {
+                margin-top: 8px;
+            }
+
+            .contenedor {
+                width: 80%;
+                max-width: 900px;
+                margin: 40px auto;
+            }
+
+            .hoy {
+                background: white;
+                padding: 25px;
+                border-radius: 12px;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+                margin-bottom: 25px;
+                text-align: center;
+            }
+
+            .hoy h2 {
+                color: #7B1E3A;
+                margin: 0 0 10px 0;
+            }
+
+            .numero {
+                font-size: 42px;
+                font-weight: bold;
+                color: #333;
+            }
+
+            .menu {
+                background: white;
+                padding: 22px;
+                margin-bottom: 15px;
+                border-radius: 10px;
+                box-shadow: 0 2px 7px rgba(0,0,0,0.10);
+                font-size: 19px;
+                font-weight: bold;
+                color: #333;
+                border-left: 7px solid #7B1E3A;
+            }
+
+            .menu:hover {
+                background: #f8edf1;
+            }
+
+            .botones {
+                text-align: center;
+                margin-top: 30px;
+            }
+
+            .boton {
+                display: inline-block;
+                background: #7B1E3A;
+                color: white;
+                padding: 12px 22px;
+                margin: 5px;
+                text-decoration: none;
+                border-radius: 7px;
+            }
+
+            .boton:hover {
+                background: #5c162c;
+            }
+
+            .salir {
+                background: #555;
+            }
+
+        </style>
+
+    </head>
+
+    <body>
+
+        <div class="encabezado">
+            <h1>BernaBOT</h1>
+            <p>Panel de Administración</p>
+        </div>
+
+        <div class="contenedor">
+
+            <div class="hoy">
+                <h2>Preguntas realizadas hoy</h2>
+                <div class="numero">--</div>
+            </div>
+
+            <div class="menu">
+                1. Preguntas realizadas en total
+            </div>
+
+            <div class="menu">
+                2. Temas más consultados
+            </div>
+
+            <div class="menu">
+                3. Historial de preguntas recientes
+            </div>
+
+            <div class="menu">
+                4. Fecha y hora de cada pregunta
+            </div>
+
+            <div class="botones">
+
+                <a href="/" class="boton">
+                    Ver BernaBOT
+                </a>
+
+                <a href="/admin/logout" class="boton salir">
+                    Cerrar sesión
+                </a>
+
+            </div>
+
+        </div>
+
+    </body>
+    </html>
+    """)
+
+    if not session.get("admin"):
         return redirect(url_for("admin_login"))
 
     return render_template_string("""
