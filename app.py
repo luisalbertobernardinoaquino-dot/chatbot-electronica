@@ -997,7 +997,7 @@ def admin_panel():
 
         <div class="encabezado">
 
-            <h1>BernaBOT</h1>
+            <h1>BernaBOT - PANEL NUEVO</h1>
 
             <p>Panel de Administración</p>
 
