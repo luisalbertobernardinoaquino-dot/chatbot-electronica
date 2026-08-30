@@ -830,11 +830,38 @@ formulario.addEventListener("submit", async function(evento) {
 
 </html>
 """
+
+
+
+
+
+
+
+
+
+
+
+
 @app.route("/admin")
 def admin_panel():
 
     if not session.get("admin"):
         return redirect("/admin/login")
+
+    hoy_fecha = datetime.now(
+        ZoneInfo("America/Merida")
+    ).strftime("%d/%m/%Y")
+
+    preguntas_hoy = sum(
+        1 for item in historial_preguntas
+        if item["fecha"] == hoy_fecha
+    )
+
+    total_preguntas = len(historial_preguntas)
+
+    preguntas_recientes = list(
+        reversed(historial_preguntas[-10:])
+    )
 
     return render_template_string("""
     <!DOCTYPE html>
@@ -842,9 +869,10 @@ def admin_panel():
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="viewport"
+              content="width=device-width, initial-scale=1.0">
 
-        <title>Panel de Administración - BernaBOT</title>
+        <title>Administración - BernaBOT</title>
 
         <style>
 
@@ -857,58 +885,71 @@ def admin_panel():
             .encabezado {
                 background: #7B1E3A;
                 color: white;
-                padding: 25px;
                 text-align: center;
-            }
-
-            .encabezado h1 {
-                margin: 0;
-            }
-
-            .encabezado p {
-                margin-top: 8px;
+                padding: 25px;
             }
 
             .contenedor {
-                width: 80%;
+                width: 85%;
                 max-width: 900px;
-                margin: 40px auto;
+                margin: 35px auto;
             }
 
             .hoy {
                 background: white;
+                text-align: center;
                 padding: 25px;
                 border-radius: 12px;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.12);
                 margin-bottom: 25px;
-                text-align: center;
+                box-shadow: 0 3px 10px rgba(0,0,0,0.12);
             }
 
             .hoy h2 {
                 color: #7B1E3A;
-                margin: 0 0 10px 0;
             }
 
             .numero {
-                font-size: 42px;
+                font-size: 45px;
                 font-weight: bold;
-                color: #333;
             }
 
             .menu {
+                width: 100%;
                 background: white;
-                padding: 22px;
-                margin-bottom: 15px;
-                border-radius: 10px;
-                box-shadow: 0 2px 7px rgba(0,0,0,0.10);
-                font-size: 19px;
-                font-weight: bold;
-                color: #333;
+                padding: 20px;
+                margin-bottom: 12px;
+                border-radius: 9px;
+                border: none;
                 border-left: 7px solid #7B1E3A;
+                box-shadow: 0 2px 7px rgba(0,0,0,0.10);
+                font-size: 18px;
+                font-weight: bold;
+                text-align: left;
+                cursor: pointer;
             }
 
             .menu:hover {
                 background: #f8edf1;
+            }
+
+            .contenido {
+                display: none;
+                background: white;
+                padding: 20px;
+                margin-top: -5px;
+                margin-bottom: 18px;
+                border-radius: 8px;
+            }
+
+            .pregunta-item {
+                padding: 12px;
+                border-bottom: 1px solid #ddd;
+            }
+
+            .fecha {
+                color: #777;
+                font-size: 14px;
+                margin-top: 5px;
             }
 
             .botones {
@@ -926,16 +967,11 @@ def admin_panel():
                 border-radius: 7px;
             }
 
-            .boton:hover {
-                background: #5c162c;
-            }
-
             .salir {
                 background: #555;
             }
 
         </style>
-
     </head>
 
     <body>
@@ -949,137 +985,190 @@ def admin_panel():
 
             <div class="hoy">
                 <h2>Preguntas realizadas hoy</h2>
-                <div class="numero">--</div>
+
+                <div class="numero">
+                    {{ preguntas_hoy }}
+                </div>
             </div>
 
-            <div class="menu">
+
+            <button class="menu"
+                    onclick="mostrar('total')">
+
                 1. Preguntas realizadas en total
+
+            </button>
+
+            <div id="total" class="contenido">
+
+                <h2>Total de preguntas:
+                    {{ total_preguntas }}
+                </h2>
+
             </div>
 
-            <div class="menu">
+
+            <button class="menu"
+                    onclick="mostrar('temas')">
+
                 2. Temas más consultados
+
+            </button>
+
+            <div id="temas" class="contenido">
+
+                <p>
+                    Estadística de temas disponible
+                    próximamente.
+                </p>
+
             </div>
 
-            <div class="menu">
+
+            <button class="menu"
+                    onclick="mostrar('historial')">
+
                 3. Historial de preguntas recientes
+
+            </button>
+
+            <div id="historial" class="contenido">
+
+                {% if preguntas_recientes %}
+
+                    {% for item in preguntas_recientes %}
+
+                        <div class="pregunta-item">
+
+                            <strong>
+                                {{ item.pregunta }}
+                            </strong>
+
+                            <div class="fecha">
+
+                                {{ item.fecha }}
+                                -
+                                {{ item.hora }}
+
+                            </div>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>
+                        Todavía no se han realizado
+                        preguntas.
+                    </p>
+
+                {% endif %}
+
             </div>
 
-            <div class="menu">
+
+            <button class="menu"
+                    onclick="mostrar('fechas')">
+
                 4. Fecha y hora de cada pregunta
+
+            </button>
+
+            <div id="fechas" class="contenido">
+
+                {% if preguntas_recientes %}
+
+                    {% for item in preguntas_recientes %}
+
+                        <div class="pregunta-item">
+
+                            {{ item.fecha }}
+                            -
+                            {{ item.hora }}
+
+                            <br>
+
+                            <strong>
+                                {{ item.pregunta }}
+                            </strong>
+
+                        </div>
+
+                    {% endfor %}
+
+                {% else %}
+
+                    <p>
+                        No existen registros todavía.
+                    </p>
+
+                {% endif %}
+
             </div>
+
 
             <div class="botones">
 
-                <a href="/" class="boton">
+                <a href="/"
+                   class="boton">
+
                     Ver BernaBOT
+
                 </a>
 
-                <a href="/admin/logout" class="boton salir">
+                <a href="/admin/logout"
+                   class="boton salir">
+
                     Cerrar sesión
+
                 </a>
 
             </div>
 
         </div>
 
-    </body>
-    </html>
-    """)
 
-    if not session.get("admin"):
-        return redirect(url_for("admin_login"))
+        <script>
 
-    return render_template_string("""
-    <!DOCTYPE html>
-    <html lang="es">
+            function mostrar(id) {
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+                var elemento =
+                    document.getElementById(id);
 
-        <title>Administrador - BernaBOT</title>
+                if (elemento.style.display === "block") {
 
-        <style>
+                    elemento.style.display = "none";
 
-            body {
-                font-family: Arial, sans-serif;
-                background: #f4f7fb;
-                margin: 0;
+                } else {
+
+                    elemento.style.display = "block";
+
+                }
+
             }
 
-            .encabezado {
-                background: #0066cc;
-                color: white;
-                padding: 20px;
-                text-align: center;
-            }
-
-            .contenedor {
-                max-width: 900px;
-                margin: 40px auto;
-                padding: 20px;
-            }
-
-            .tarjeta {
-                background: white;
-                padding: 25px;
-                margin-bottom: 20px;
-                border-radius: 12px;
-                box-shadow: 0 3px 12px rgba(0,0,0,0.12);
-            }
-
-            .boton {
-                display: inline-block;
-                background: #0066cc;
-                color: white;
-                text-decoration: none;
-                padding: 12px 20px;
-                margin: 5px;
-                border-radius: 6px;
-            }
-
-            .salir {
-                background: #cc3333;
-            }
-
-        </style>
-
-    </head>
-
-    <body>
-
-        <div class="encabezado">
-            <h1>BernaBOT</h1>
-            <h2>Panel de administrador</h2>
-        </div>
-
-        <div class="contenedor">
-
-            <div class="tarjeta">
-
-                <h2>Administración de BernaBOT</h2>
-
-                <p>
-                    Desde este panel podrás administrar y configurar
-                    las funciones de BernaBOT.
-                </p>
-
-                <a class="boton" href="/">
-                    Ver BernaBOT
-                </a>
-
-                <a class="boton salir" href="/admin/logout">
-                    Cerrar sesión
-                </a>
-
-            </div>
-
-        </div>
+        </script>
 
     </body>
 
     </html>
-    """)
+    """,
+    preguntas_hoy=preguntas_hoy,
+    total_preguntas=total_preguntas,
+    preguntas_recientes=preguntas_recientes
+    )
+
+
+
+
+
+
+
+
+
+
+
 
 
 @app.route("/admin/logout")
