@@ -869,10 +869,8 @@ def admin_panel():
 
     <head>
         <meta charset="UTF-8">
-        <meta name="viewport"
-              content="width=device-width, initial-scale=1.0">
 
-        <title>Administración - BernaBOT</title>
+        <title>Panel de Administración - BernaBOT</title>
 
         <style>
 
@@ -885,8 +883,8 @@ def admin_panel():
             .encabezado {
                 background: #7B1E3A;
                 color: white;
-                text-align: center;
                 padding: 25px;
+                text-align: center;
             }
 
             .contenedor {
@@ -897,11 +895,10 @@ def admin_panel():
 
             .hoy {
                 background: white;
-                text-align: center;
                 padding: 25px;
                 border-radius: 12px;
+                text-align: center;
                 margin-bottom: 25px;
-                box-shadow: 0 3px 10px rgba(0,0,0,0.12);
             }
 
             .hoy h2 {
@@ -913,36 +910,27 @@ def admin_panel():
                 font-weight: bold;
             }
 
-            .menu {
-                width: 100%;
+            details {
                 background: white;
-                padding: 20px;
-                margin-bottom: 12px;
-                border-radius: 9px;
-                border: none;
+                margin-bottom: 15px;
+                border-radius: 10px;
                 border-left: 7px solid #7B1E3A;
                 box-shadow: 0 2px 7px rgba(0,0,0,0.10);
+            }
+
+            summary {
+                padding: 20px;
                 font-size: 18px;
                 font-weight: bold;
-                text-align: left;
                 cursor: pointer;
             }
 
-            .menu:hover {
-                background: #f8edf1;
-            }
-
             .contenido {
-                display: none;
-                background: white;
-                padding: 20px;
-                margin-top: -5px;
-                margin-bottom: 18px;
-                border-radius: 8px;
+                padding: 5px 25px 20px 25px;
             }
 
             .pregunta-item {
-                padding: 12px;
+                padding: 12px 0;
                 border-bottom: 1px solid #ddd;
             }
 
@@ -972,6 +960,7 @@ def admin_panel():
             }
 
         </style>
+
     </head>
 
     <body>
@@ -984,171 +973,142 @@ def admin_panel():
         <div class="contenedor">
 
             <div class="hoy">
+
                 <h2>Preguntas realizadas hoy</h2>
 
                 <div class="numero">
                     {{ preguntas_hoy }}
                 </div>
-            </div>
-
-
-            <button class="menu"
-                    onclick="mostrar('total')">
-
-                1. Preguntas realizadas en total
-
-            </button>
-
-            <div id="total" class="contenido">
-
-                <h2>Total de preguntas:
-                    {{ total_preguntas }}
-                </h2>
 
             </div>
 
 
-            <button class="menu"
-                    onclick="mostrar('temas')">
+            <details>
 
-                2. Temas más consultados
+                <summary>
+                    1. Preguntas realizadas en total
+                </summary>
 
-            </button>
+                <div class="contenido">
 
-            <div id="temas" class="contenido">
+                    <h2>
+                        Total de preguntas: {{ total_preguntas }}
+                    </h2>
 
-                <p>
-                    Estadística de temas disponible
-                    próximamente.
-                </p>
+                </div>
 
-            </div>
+            </details>
 
 
-            <button class="menu"
-                    onclick="mostrar('historial')">
+            <details>
 
-                3. Historial de preguntas recientes
+                <summary>
+                    2. Temas más consultados
+                </summary>
 
-            </button>
+                <div class="contenido">
 
-            <div id="historial" class="contenido">
+                    <p>
+                        Análisis de temas disponible próximamente.
+                    </p>
 
-                {% if preguntas_recientes %}
+                </div>
 
-                    {% for item in preguntas_recientes %}
+            </details>
 
-                        <div class="pregunta-item">
 
-                            <strong>
-                                {{ item.pregunta }}
-                            </strong>
+            <details>
 
-                            <div class="fecha">
+                <summary>
+                    3. Historial de preguntas recientes
+                </summary>
 
-                                {{ item.fecha }}
-                                -
-                                {{ item.hora }}
+                <div class="contenido">
+
+                    {% if preguntas_recientes %}
+
+                        {% for item in preguntas_recientes %}
+
+                            <div class="pregunta-item">
+
+                                <strong>
+                                    {{ item.pregunta }}
+                                </strong>
+
+                                <div class="fecha">
+                                    {{ item.fecha }} - {{ item.hora }}
+                                </div>
 
                             </div>
 
-                        </div>
+                        {% endfor %}
 
-                    {% endfor %}
+                    {% else %}
 
-                {% else %}
+                        <p>
+                            Todavía no se han realizado preguntas.
+                        </p>
 
-                    <p>
-                        Todavía no se han realizado
-                        preguntas.
-                    </p>
+                    {% endif %}
 
-                {% endif %}
+                </div>
 
-            </div>
+            </details>
 
 
-            <button class="menu"
-                    onclick="mostrar('fechas')">
+            <details>
 
-                4. Fecha y hora de cada pregunta
+                <summary>
+                    4. Fecha y hora de cada pregunta
+                </summary>
 
-            </button>
+                <div class="contenido">
 
-            <div id="fechas" class="contenido">
+                    {% if preguntas_recientes %}
 
-                {% if preguntas_recientes %}
+                        {% for item in preguntas_recientes %}
 
-                    {% for item in preguntas_recientes %}
+                            <div class="pregunta-item">
 
-                        <div class="pregunta-item">
+                                <strong>
+                                    {{ item.fecha }} - {{ item.hora }}
+                                </strong>
 
-                            {{ item.fecha }}
-                            -
-                            {{ item.hora }}
+                                <br>
 
-                            <br>
-
-                            <strong>
                                 {{ item.pregunta }}
-                            </strong>
 
-                        </div>
+                            </div>
 
-                    {% endfor %}
+                        {% endfor %}
 
-                {% else %}
+                    {% else %}
 
-                    <p>
-                        No existen registros todavía.
-                    </p>
+                        <p>
+                            No existen registros todavía.
+                        </p>
 
-                {% endif %}
+                    {% endif %}
 
-            </div>
+                </div>
+
+            </details>
 
 
             <div class="botones">
 
-                <a href="/"
-                   class="boton">
-
+                <a href="/" class="boton">
                     Ver BernaBOT
-
                 </a>
 
                 <a href="/admin/logout"
                    class="boton salir">
-
                     Cerrar sesión
-
                 </a>
 
             </div>
 
         </div>
-
-
-        <script>
-
-            function mostrar(id) {
-
-                var elemento =
-                    document.getElementById(id);
-
-                if (elemento.style.display === "block") {
-
-                    elemento.style.display = "none";
-
-                } else {
-
-                    elemento.style.display = "block";
-
-                }
-
-            }
-
-        </script>
 
     </body>
 
@@ -1158,10 +1118,6 @@ def admin_panel():
     total_preguntas=total_preguntas,
     preguntas_recientes=preguntas_recientes
     )
-
-
-
-
 
 
 
