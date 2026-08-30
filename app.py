@@ -3,8 +3,15 @@ from google import genai
 from google.genai import types
 import os
 import re
+from datetime import datetime
+
+from zoneinfo import ZoneInfo
+
 from hmac import compare_digest
 app = Flask(__name__)
+
+historial_preguntas = []
+
 app.secret_key = os.environ.get("SECRET_KEY")
 def limpiar_respuesta(texto):
 
@@ -1186,6 +1193,19 @@ def inicio():
 
     if request.method == "POST":
         pregunta = request.form["pregunta"]
+
+ if pregunta.strip():
+        ahora = datetime.now(ZoneInfo("America/Merida"))
+
+        historial_preguntas.append({
+            "pregunta": pregunta.strip(),
+            "fecha": ahora.strftime("%d/%m/%Y"),
+            "hora": ahora.strftime("%H:%M")
+        })
+
+        if len(historial_preguntas) > 50:
+            historial_preguntas.pop(0)
+        
         respuesta = responder(pregunta)
 
     return render_template_string(
